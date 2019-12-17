@@ -1,5 +1,6 @@
 import 'dart:async';
-import 'dart:convert' show utf8;
+import 'dart:convert' show utf8, json;
+
 
 import 'package:flutter/material.dart';
 import 'package:flutter_blue/flutter_blue.dart';
@@ -26,7 +27,7 @@ class WifiSetter extends StatefulWidget {
 class _WifiSetterState extends State<WifiSetter> {
   final String SERVICE_UUID = "4fafc201-1fb5-459e-8fcc-c5c9c331914b";
   final String CHARACTERISTIC_UUID = "beb5483e-36e1-4688-b7f5-ea07361b26a8";
-  final String TARGET_DEVICE_NAME = "ESP32 THAT PROJECT";
+  final String TARGET_DEVICE_NAME = "Open Light SSSL";
 
   FlutterBlue flutterBlue = FlutterBlue.instance;
   StreamSubscription<ScanResult> scanSubscription;
@@ -35,6 +36,8 @@ class _WifiSetterState extends State<WifiSetter> {
   BluetoothCharacteristic targetCharacteristic;
 
   String connectionText = "";
+
+  Stream<List<int>> stream;
 
   @override
   void initState() {
@@ -111,11 +114,55 @@ class _WifiSetterState extends State<WifiSetter> {
             setState(() {
               connectionText = "All Ready with ${targetDevice.name}";
             });
+
+
+            targetCharacteristic.setNotifyValue(true);
+
+            var decoded = utf8.decode([0x62, 0x6c, 0xc3, 0xa5, 0x62, 0xc3, 0xa6, 0x72, 0x67, 0x72, 0xc3, 0xb8, 0x64]);
+            print(decoded);
+            /*
+              targetCharacteristic.value.listen((List<int> data) {
+                String decoded = utf8.decode(data);
+                //String s = new String.fromCharCodes(value);
+                print(decoded);
+            }); */
+            
+              stream = targetCharacteristic.value;
+
+
+              stream.listen((data) {
+
+                print(data);
+                
+                //String jsonString = jsonCodec.encode();
+
+                //Map<String, dynamic> user = jsonDecode(jsonString);
+                if(data != null && data.isNotEmpty) {
+                  //String test = utf8.decode(data);
+                  //print(test);
+                  //print(data);
+                  print(utf8.decode(data));
+                } else {
+                  //print("empty");
+                }
+                
+              
+              }, onDone: () {
+                print("Task Done");
+              }, onError: (error) {
+                print("Some Error");
+              });
           }
         });
       }
+
+
     });
+
+
   }
+
+
 
   writeData(String data) async {
     if (targetCharacteristic == null) return;
