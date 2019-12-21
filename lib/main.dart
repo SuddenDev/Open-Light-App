@@ -36,8 +36,10 @@ class _WifiSetterState extends State<WifiSetter> {
   BluetoothCharacteristic targetCharacteristic;
 
   String connectionText = "";
+  String wifiString;
+  Map<String, dynamic> wifiMap;
 
-  Stream<List<int>> stream;
+  Stream<List<int>> streamFromBle;
 
   @override
   void initState() {
@@ -45,6 +47,7 @@ class _WifiSetterState extends State<WifiSetter> {
     startScan();
   }
 
+  // start scan for BLE
   startScan() {
     setState(() {
       connectionText = "Start Scanning";
@@ -65,11 +68,13 @@ class _WifiSetterState extends State<WifiSetter> {
     }, onDone: () => stopScan());
   }
 
+  // stop scanning
   stopScan() {
     scanSubscription?.cancel();
     scanSubscription = null;
   }
 
+  // connect to device
   connectToDevice() async {
     if (targetDevice == null) {
       return;
@@ -88,6 +93,7 @@ class _WifiSetterState extends State<WifiSetter> {
     discoverServices();
   }
 
+  // disconnect from device
   disconnectFromDeivce() {
     if (targetDevice == null) {
       return;
@@ -100,6 +106,7 @@ class _WifiSetterState extends State<WifiSetter> {
     });
   }
 
+  // discover services and connect to pre-defined service if available
   discoverServices() async {
     if (targetDevice == null) {
       return;
@@ -115,51 +122,38 @@ class _WifiSetterState extends State<WifiSetter> {
               connectionText = "All Ready with ${targetDevice.name}";
             });
 
-
-            targetCharacteristic.setNotifyValue(true);
-
-            var decoded = utf8.decode([0x62, 0x6c, 0xc3, 0xa5, 0x62, 0xc3, 0xa6, 0x72, 0x67, 0x72, 0xc3, 0xb8, 0x64]);
-            print(decoded);
-            /*
-              targetCharacteristic.value.listen((List<int> data) {
-                String decoded = utf8.decode(data);
-                //String s = new String.fromCharCodes(value);
-                print(decoded);
-            }); */
-            
-              stream = targetCharacteristic.value;
-
-
-              stream.listen((data) {
-
-                print(data);
-                
-                //String jsonString = jsonCodec.encode();
-
-                //Map<String, dynamic> user = jsonDecode(jsonString);
-                if(data != null && data.isNotEmpty) {
-                  //String test = utf8.decode(data);
-                  //print(test);
-                  //print(data);
-                  print(utf8.decode(data));
-                } else {
-                  //print("empty");
-                }
-                
-              
-              }, onDone: () {
-                print("Task Done");
-              }, onError: (error) {
-                print("Some Error");
-              });
+            targetCharacteristic.setNotifyValue(true);          
+            streamFromBle = targetCharacteristic.value;
+            streamFromBle.listen((data) {
+              if(data != null && data.isNotEmpty) {
+                //print(utf8.decode(data));
+                mapWiFiNetworks(data);
+              }
+            });
           }
         });
       }
-
-
     });
+  }
 
+  // create and update WiFiMap 
+  mapWiFiNetworks(List<int> data) {
+    String currentString = utf8.decode(data);
 
+    if(currentString == "@@start@@") {
+      setState(() {
+        wifiString = "";
+      });
+      return;
+    } else if(currentString  == "@@end@@") {
+      setState(() {
+        wifiMap = json.decode(wifiString);
+      });
+    } else {
+      setState(() {
+        wifiString = wifiString + currentString;
+      });
+    }
   }
 
 
