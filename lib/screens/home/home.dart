@@ -76,9 +76,9 @@ class _HomeState extends State<Home> {
                     boxShadow: _softUiShadowsLight),
                 child: Center(
                   child: HomeSlider(
-                    // sliderHeight: MediaQuery.of(context).size.height * 0.45,
-                    sliderSegments: 12,
-                    sliderHeight: 400,
+                    sliderHeight: MediaQuery.of(context).size.height * 0.45,
+                    sliderSegments: 20,
+                    // sliderHeight: 400,
                   )
                 ),
               ),

@@ -48,7 +48,7 @@ class _HomeSliderState extends State<HomeSlider> {
       _dragPercentage = _dragPosition / widget.sliderHeight;
     });
     
-    print(_dragPercentage);
+    print(_dragPosition);
   }
 
   void _onDragUpdate(BuildContext context, DragUpdateDetails update) {
@@ -79,10 +79,13 @@ class _HomeSliderState extends State<HomeSlider> {
           // color: Colors.green,
           child: CustomPaint(
             painter:HomeSliderPainter(
-              color: Colors.blueGrey[200].withAlpha(200),
+              backgroundColor: Colors.blueGrey[200].withAlpha(100),
+              color: Colors.grey[200],
+              // innerShadowTopColor: Colors.blueGrey[500],
               dragPercentage: _dragPercentage,
               sliderPosition: _dragPosition,
-              segments: widget.sliderSegments
+              segments: widget.sliderSegments,
+              btt: widget.btt
             )
           )
         ),
