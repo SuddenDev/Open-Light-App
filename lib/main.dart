@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 // import 'package:open_light_app/screens/wifi_setter.dart';
 // import 'package:open_light_app/screens/bluetooth_off.dart';
-import 'package:open_light_app/screens/home.dart';
+import 'package:open_light_app/screens/home/home.dart';
 // import 'package:open_light_app/screens/wave_example.dart';
 
 void main() => runApp(OpenLightApp());

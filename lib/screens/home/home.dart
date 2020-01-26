@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_xlider/flutter_xlider.dart';
+// import 'package:flutter_xlider/flutter_xlider.dart';
+
+import 'package:open_light_app/screens/home/home_slider.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -7,6 +9,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  
   final _softUiShadowsDark = [
     BoxShadow(
       color: new Color(0x22000000),
@@ -72,20 +75,11 @@ class _HomeState extends State<Home> {
                     borderRadius: BorderRadius.all(Radius.circular(32.0)),
                     boxShadow: _softUiShadowsLight),
                 child: Center(
-                  child: FlutterSlider(
-                    axis: Axis.vertical,
-                    rtl: true,
-                    tooltip: FlutterSliderTooltip(
-                      disabled: true,
-                    ),
-                    values: [0],
-                    max: 1024,
-                    min: 0,
-                    onDragging: (handlerIndex, lowerValue, upperValue) {
-                      // setState(() {});
-                      print('Lower: ' + lowerValue.toString());
-                    },
-                  ),
+                  child: HomeSlider(
+                    // sliderHeight: MediaQuery.of(context).size.height * 0.45,
+                    sliderSegments: 12,
+                    sliderHeight: 400,
+                  )
                 ),
               ),
               Container(
@@ -115,16 +109,6 @@ class AlineAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      /*
-      decoration: BoxDecoration(
-        color: Theme.of(context).primaryColor,
-        borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(16.0),
-          bottomRight: Radius.circular(16.0),
-        ),
-        boxShadow: _softUiShadows
-      ),
-      */
       child: Padding(
           padding: EdgeInsets.only(top: 56.0),
           child: Column(

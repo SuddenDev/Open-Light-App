@@ -13,9 +13,9 @@ class WifiSetter extends StatefulWidget {
 
 class _WifiSetterState extends State<WifiSetter> {
     
-  final String SERVICE_UUID = "4fafc201-1fb5-459e-8fcc-c5c9c331914b";
-  final String CHARACTERISTIC_UUID = "beb5483e-36e1-4688-b7f5-ea07361b26a8";
-  final String TARGET_DEVICE_NAME = "Open Light SSSL";
+  final String serviceUUID = "4fafc201-1fb5-459e-8fcc-c5c9c331914b";
+  final String characteristicUUID = "beb5483e-36e1-4688-b7f5-ea07361b26a8";
+  final String targetDeviceName = "ALINE";
 
   FlutterBlue flutterBlue = FlutterBlue.instance;
   StreamSubscription<ScanResult> scanSubscription;
@@ -46,7 +46,7 @@ class _WifiSetterState extends State<WifiSetter> {
     scanSubscription = flutterBlue.scan().listen((scanResult) {
       print('scanning..,');
       print(scanResult.device.name);
-      if (scanResult.device.name.contains(TARGET_DEVICE_NAME)) {
+      if (scanResult.device.name.contains(targetDeviceName)) {
         stopScan();
 
         setState(() {
@@ -106,9 +106,9 @@ class _WifiSetterState extends State<WifiSetter> {
 
     List<BluetoothService> services = await targetDevice.discoverServices();
     services.forEach((service) {
-      if (service.uuid.toString() == SERVICE_UUID) {
+      if (service.uuid.toString() == serviceUUID) {
         service.characteristics.forEach((characteristics) {
-          if (characteristics.uuid.toString() == CHARACTERISTIC_UUID) {
+          if (characteristics.uuid.toString() == characteristicUUID) {
             targetCharacteristic = characteristics;
             setState(() {
               connectionText = "All Ready with ${targetDevice.name}";
