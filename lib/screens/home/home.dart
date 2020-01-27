@@ -80,12 +80,13 @@ class _HomeState extends State<Home> {
                 child: Center(
                   child: HomeSlider(
                     sliderHeight: MediaQuery.of(context).size.height * 0.45,
-                    sliderSegments: 20,
+                    sliderSegments: 17,
                     color: Colors.grey[200],
                     backgroundColor: Colors.blueGrey[200].withAlpha(100),
                     innerShadowTopColor: Colors.blueGrey[400],
                     innerShadowBottomColor: Colors.blueGrey[50],
                     onChanged: (double val) => _valBrightness = val,
+                    onChangeStart: (double val) => _valBrightness = val,
                   )
                 ),
               ),
@@ -101,12 +102,14 @@ class _HomeState extends State<Home> {
                 child: Center(
                   child: HomeSlider(
                     sliderHeight: MediaQuery.of(context).size.height * 0.45,
-                    sliderSegments: 20,
+                    sliderSegments: 17,
                     color: Color.lerp(Colors.lightBlue[50], Colors.amber[100], _valTemperature),
                     backgroundColor: Colors.blueGrey[200].withAlpha(100),
                     innerShadowTopColor: Colors.blueGrey[400],
                     innerShadowBottomColor: Colors.blueGrey[50],
+                    startValue: 0.5,
                     onChanged: (double val) => setState(() => _valTemperature = val),
+                    onChangeStart: (double val) => setState(() => _valTemperature = val),
                   )
                 ),
               ),

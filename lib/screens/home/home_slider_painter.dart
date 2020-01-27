@@ -7,6 +7,7 @@ class HomeSliderPainter extends CustomPainter {
   final double sliderPosition;
   final double dragPercentage;
   final bool btt;
+  final bool inactive;
 
   final double animationProgress;
   final SliderState sliderState;
@@ -14,6 +15,7 @@ class HomeSliderPainter extends CustomPainter {
   double _previousSliderPosition = 0;
 
   final Color color;
+  final Color inactiveColor;
   final Color backgroundColor;
   final Color innerShadowTopColor;
   final Color innerShadowBottomColor;
@@ -42,12 +44,14 @@ class HomeSliderPainter extends CustomPainter {
     @required this.color,
     @required this.innerShadowTopColor,
     @required this.innerShadowBottomColor,
+    @required this.inactiveColor,
     this.segments = 12,
     this.btt = true,
+    this.inactive = false,
     this.lineHeight = 5.0,
     this.shadowDistance = 1.0,
   })  : fillPainter = Paint()
-          ..color = color
+          ..color = inactive ? inactiveColor : color
           ..style = PaintingStyle.fill,
         backgroundPainter = Paint()
           ..color = backgroundColor
@@ -76,7 +80,7 @@ class HomeSliderPainter extends CustomPainter {
     canvas.drawPath(
         _glowBars,
         Paint()
-          ..color = color.withAlpha(200)
+          ..color = inactive ? Colors.transparent : color.withAlpha(200)
           ..style = PaintingStyle.fill
           ..maskFilter =
               MaskFilter.blur(BlurStyle.outer, _convertRadiusToSigma(6)));

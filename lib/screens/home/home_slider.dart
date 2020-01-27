@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'home_slider_painter.dart';
 
@@ -6,23 +8,35 @@ class HomeSlider extends StatefulWidget {
   final double sliderHeight;
   final int sliderSegments;
   final bool btt; // bottom to top
+  final bool inactive;
+
+  // Callbacks
   final ValueChanged<double> onChanged;
+  final ValueChanged<double> onChangeStart;
 
   final Color color;
+  final Color inactiveColor;
   final Color backgroundColor;
   final Color innerShadowTopColor;
   final Color innerShadowBottomColor;
 
+  /// Start value between 0 and 1
+  final double startValue;
+
   const HomeSlider({
+    this.startValue = 0.45,
     this.sliderWidth = 60.0,
     this.sliderHeight = 400.0,
     this.sliderSegments = 12,
+    this.inactive = false,
     this.btt = true,
     this.color = Colors.white,
+    this.inactiveColor = Colors.transparent,
     this.backgroundColor = Colors.black12,
     this.innerShadowTopColor = Colors.black38,
     this.innerShadowBottomColor = Colors.white24,
-    @required this.onChanged
+    @required this.onChanged,
+    this.onChangeStart,
   }):assert(sliderSegments >= 8 && sliderSegments <= 30);
 
   @override
@@ -33,6 +47,8 @@ class _HomeSliderState extends State<HomeSlider> with SingleTickerProviderStateM
   double _dragPosition = 0;
   double _dragPercentage = 0;
 
+  bool firstDraw = true;
+
   HomeSliderController _slideController;
 
   @override
@@ -40,6 +56,9 @@ class _HomeSliderState extends State<HomeSlider> with SingleTickerProviderStateM
     super.initState();
     _slideController = HomeSliderController(vsync: this)
       ..addListener(() => setState(() {}));
+
+    _updateDragPosition(Offset(0.0, widget.startValue * widget.sliderHeight));
+    firstDraw = false;
   }
 
   @override
@@ -48,35 +67,44 @@ class _HomeSliderState extends State<HomeSlider> with SingleTickerProviderStateM
     super.dispose();
   }
 
+  /// Updating the drag position 
   void _updateDragPosition(Offset val) {
     double newDragPosition = 0.0;
-    if (widget.btt) {
-      if (val.dy <= 0.0) {
-        newDragPosition = widget.sliderHeight;
-      } else if (val.dy >= widget.sliderHeight) {
-        newDragPosition = 0.0;
-      } else {
-        newDragPosition = widget.sliderHeight - val.dy;
-      }
-    } else {
-      if (val.dy <= 0.0) {
-        newDragPosition = 0.0;
-      } else if (val.dy >= widget.sliderHeight) {
-        newDragPosition = widget.sliderHeight;
-      } else {
-        newDragPosition = val.dy;
-      }
-    }
+    if(!widget.inactive || firstDraw) {
+      
+        if (widget.btt) {
+          if (val.dy <= 0.0) {
+            newDragPosition = widget.sliderHeight;
+          } else if (val.dy >= widget.sliderHeight) {
+            newDragPosition = 0.0;
+          } else {
+            newDragPosition = widget.sliderHeight - val.dy;
+          }
+        } else {
+          if (val.dy <= 0.0) {
+            newDragPosition = 0.0;
+          } else if (val.dy >= widget.sliderHeight) {
+            newDragPosition = widget.sliderHeight;
+          } else {
+            newDragPosition = val.dy;
+          }
+        }
 
-    setState(() {
-      _dragPosition = newDragPosition;
-      _dragPercentage = _dragPosition / widget.sliderHeight;
-    });
+        setState(() {
+          _dragPosition = newDragPosition;
+          _dragPercentage = _dragPosition / widget.sliderHeight;
+        });
+    }
   }
 
   void _handleChangeUpdate(double val) {
     assert(widget.onChanged != null);
     widget.onChanged(val);
+  }
+  
+  void _handleChangeStart(double val) {
+    assert(widget.onChangeStart != null);
+    widget.onChangeStart(val);
   }
 
   void _onDragUpdate(BuildContext context, DragUpdateDetails update) {
@@ -92,6 +120,7 @@ class _HomeSliderState extends State<HomeSlider> with SingleTickerProviderStateM
     Offset offset = box.globalToLocal(start.globalPosition);
     _slideController.setStateToStart();
     _updateDragPosition(offset);
+    _handleChangeStart(_dragPercentage);
   }
 
   void _onDragEnd(BuildContext context, DragEndDetails end) {
@@ -110,6 +139,7 @@ class _HomeSliderState extends State<HomeSlider> with SingleTickerProviderStateM
           child: CustomPaint(
               painter: HomeSliderPainter(
                   color: widget.color,
+                  inactiveColor: widget.inactiveColor,
                   backgroundColor: widget.backgroundColor,
                   innerShadowTopColor: widget.innerShadowTopColor,
                   innerShadowBottomColor: widget.innerShadowTopColor,
@@ -118,7 +148,9 @@ class _HomeSliderState extends State<HomeSlider> with SingleTickerProviderStateM
                   dragPercentage: _dragPercentage,
                   sliderPosition: _dragPosition,
                   segments: widget.sliderSegments,
-                  btt: widget.btt))),
+                  btt: widget.btt,
+                  inactive: widget.inactive
+              ))),
       onVerticalDragUpdate: (DragUpdateDetails update) =>
           _onDragUpdate(context, update),
       onVerticalDragStart: (DragStartDetails start) =>
@@ -128,6 +160,8 @@ class _HomeSliderState extends State<HomeSlider> with SingleTickerProviderStateM
   }
 }
 
+
+// Animation Controller
 class HomeSliderController extends ChangeNotifier {
   final AnimationController controller;
   SliderState _state = SliderState.resting;
