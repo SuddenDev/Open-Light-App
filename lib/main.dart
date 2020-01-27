@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 // import 'package:open_light_app/screens/wifi_setter.dart';
 // import 'package:open_light_app/screens/bluetooth_off.dart';
 import 'package:open_light_app/screens/home/home.dart';
-// import 'package:open_light_app/screens/wave_example.dart';
 
 void main() => runApp(OpenLightApp());
 
@@ -26,12 +25,16 @@ class OpenLightApp extends StatelessWidget {
             }
             return BluetoothOffScreen(state: state);
           }),*/
-      theme: ThemeData.dark().copyWith(
-        //primaryColor: new Color(0xff2a2a2a),
+      theme: ThemeData(
         primaryColor: Colors.blueGrey[100],
         accentColor: new Color(0xffFFBE61),
-        scaffoldBackgroundColor: Colors.blueGrey[100],
+        scaffoldBackgroundColor: Colors.blueGrey[200],
       ),
+      darkTheme: ThemeData.dark().copyWith(
+        primaryColor: Colors.grey[850],
+        accentColor: new Color(0xffFFBE61),
+        scaffoldBackgroundColor: Colors.grey[900],
+      )
     );
   }
 }

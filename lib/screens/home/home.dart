@@ -72,7 +72,7 @@ class _HomeState extends State<Home> {
                 padding: EdgeInsets.only(top: 16.0, bottom: 16.0),
                 margin: EdgeInsets.only(
                     right: MediaQuery.of(context).size.height / 20),
-                width: 95.0,
+                width: MediaQuery.of(context).size.width / 10,
                 decoration: BoxDecoration(
                     color: Theme.of(context).primaryColor,
                     borderRadius: BorderRadius.all(Radius.circular(32.0)),
