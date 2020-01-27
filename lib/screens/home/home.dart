@@ -10,6 +10,9 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   
+  double _valTemperature = 0;
+  double _valBrightness = 0;
+
   final _softUiShadowsDark = [
     BoxShadow(
       color: new Color(0x22000000),
@@ -78,7 +81,11 @@ class _HomeState extends State<Home> {
                   child: HomeSlider(
                     sliderHeight: MediaQuery.of(context).size.height * 0.45,
                     sliderSegments: 20,
-                    // sliderHeight: 400,
+                    color: Colors.grey[200],
+                    backgroundColor: Colors.blueGrey[200].withAlpha(100),
+                    innerShadowTopColor: Colors.blueGrey[400],
+                    innerShadowBottomColor: Colors.blueGrey[50],
+                    onChanged: (double val) => _valBrightness = val,
                   )
                 ),
               ),
@@ -89,7 +96,19 @@ class _HomeState extends State<Home> {
                 decoration: BoxDecoration(
                     color: Theme.of(context).primaryColor,
                     borderRadius: BorderRadius.all(Radius.circular(32.0)),
-                    boxShadow: _softUiShadowsLight),
+                    boxShadow: _softUiShadowsLight
+                ),
+                child: Center(
+                  child: HomeSlider(
+                    sliderHeight: MediaQuery.of(context).size.height * 0.45,
+                    sliderSegments: 20,
+                    color: Color.lerp(Colors.lightBlue[50], Colors.amber[100], _valTemperature),
+                    backgroundColor: Colors.blueGrey[200].withAlpha(100),
+                    innerShadowTopColor: Colors.blueGrey[400],
+                    innerShadowBottomColor: Colors.blueGrey[50],
+                    onChanged: (double val) => setState(() => _valTemperature = val),
+                  )
+                ),
               ),
             ],
           ),
