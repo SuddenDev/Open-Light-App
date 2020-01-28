@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-// import 'package:flutter_xlider/flutter_xlider.dart';
+import 'package:open_light_app/utils/themes.dart';
 
 import 'package:open_light_app/screens/home/home_slider.dart';
 
@@ -13,54 +13,25 @@ class _HomeState extends State<Home> {
   double _valTemperature = 0;
   double _valBrightness = 0;
 
-  final _softUiShadowsDark = [
-    BoxShadow(
-      color: new Color(0x22000000),
-      blurRadius: 12.0, // has the effect of softening the shadow
-      spreadRadius: 1.0, // has the effect of extending the shadow
-      offset: Offset(
-          5.0, // horizontal, move right 10
-          5.0 // vertical, move down 10
-          ),
-    ),
-    BoxShadow(
-      color: new Color(0x66ffffff),
-      blurRadius: 12.0,
-      spreadRadius: 1.0,
-      offset: Offset(
-          -5.0, // horizontal, move right 10
-          -5.0 // vertical, move down 10
-          ),
-    )
-  ];
-
-  final _softUiShadowsLight = [
-    BoxShadow(
-      color: new Color(0x22000000),
-      blurRadius: 12.0, // has the effect of softening the shadow
-      spreadRadius: 1.0, // has the effect of extending the shadow
-      offset: Offset(
-          5.0, // horizontal, move right 10
-          5.0 // vertical, move down 10
-          ),
-    ),
-    BoxShadow(
-      color: new Color(0x66ffffff),
-      blurRadius: 12.0,
-      spreadRadius: 1.0,
-      offset: Offset(
-          -5.0, // horizontal, move right 10
-          -5.0 // vertical, move down 10
-          ),
-    )
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(120.0),
-          child: AlineAppBar(softUiShadows: _softUiShadowsLight),
+          child: Container(
+              child: Padding(
+                  padding: EdgeInsets.only(top: 56.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Image.asset(
+                        'assets/aline_logo@2x.png',
+                        fit: BoxFit.contain,
+                        height: 36,
+                      ),
+                    ],
+                  )),
+            ),
         ),
         body: Container(
           margin: EdgeInsets.only(top: MediaQuery.of(context).size.height / 8),
@@ -76,7 +47,27 @@ class _HomeState extends State<Home> {
                 decoration: BoxDecoration(
                     color: Theme.of(context).primaryColor,
                     borderRadius: BorderRadius.all(Radius.circular(32.0)),
-                    boxShadow: _softUiShadowsLight),
+                    boxShadow: [
+                      BoxShadow(
+                        color: new Color(0x22000000),
+                        blurRadius: 12.0, // has the effect of softening the shadow
+                        spreadRadius: 1.0, // has the effect of extending the shadow
+                        offset: Offset(
+                            5.0, // horizontal, move right 10
+                            5.0 // vertical, move down 10
+                            ),
+                      ),
+                      BoxShadow(
+                        color: new Color(0x66ffffff),
+                        blurRadius: 12.0,
+                        spreadRadius: 1.0,
+                        offset: Offset(
+                            -5.0, // horizontal, move right 10
+                            -5.0 // vertical, move down 10
+                            ),
+                      )
+                    ],
+                    ),
                 child: Center(
                   child: HomeSlider(
                     sliderHeight: MediaQuery.of(context).size.height * 0.45,
@@ -97,7 +88,26 @@ class _HomeState extends State<Home> {
                 decoration: BoxDecoration(
                     color: Theme.of(context).primaryColor,
                     borderRadius: BorderRadius.all(Radius.circular(32.0)),
-                    boxShadow: _softUiShadowsLight
+                    boxShadow: [
+                      BoxShadow(
+                        color: new Color(0x22000000),
+                        blurRadius: 12.0, // has the effect of softening the shadow
+                        spreadRadius: 1.0, // has the effect of extending the shadow
+                        offset: Offset(
+                            5.0, // horizontal, move right 10
+                            5.0 // vertical, move down 10
+                            ),
+                      ),
+                      BoxShadow(
+                        color: new Color(0x66ffffff),
+                        blurRadius: 12.0,
+                        spreadRadius: 1.0,
+                        offset: Offset(
+                            -5.0, // horizontal, move right 10
+                            -5.0 // vertical, move down 10
+                            ),
+                      )
+                    ],
                 ),
                 child: Center(
                   child: HomeSlider(
@@ -119,30 +129,3 @@ class _HomeState extends State<Home> {
   }
 }
 
-class AlineAppBar extends StatelessWidget {
-  const AlineAppBar({
-    Key key,
-    @required List<BoxShadow> softUiShadows,
-  })  : _softUiShadows = softUiShadows,
-        super(key: key);
-
-  final List<BoxShadow> _softUiShadows;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Padding(
-          padding: EdgeInsets.only(top: 56.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Image.asset(
-                'assets/aline_logo@2x.png',
-                fit: BoxFit.contain,
-                height: 36,
-              ),
-            ],
-          )),
-    );
-  }
-}
