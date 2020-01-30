@@ -16,17 +16,25 @@ final Color _accentColor = new Color(0xffFFBE61);
 /// Light Theme
 final ThemeData lightTheme = ThemeData(
   primaryColor: _baseColorLight,
+  primaryColorLight: _shadowColorLightBright,
+  primaryColorDark: _shadowColorLightDark,
   accentColor: _accentColor,
   scaffoldBackgroundColor: _baseColorLight,
-  dialogBackgroundColor: _baseColorLight
+  dialogBackgroundColor: _baseColorLight,
+  fontFamily: 'Poppins',
+  textTheme: TextTheme(
+    title: TextStyle(color: _shadowColorLightDark),
+  )
 );
 
 /// Dark Theme
 final ThemeData darkTheme = ThemeData.dark().copyWith(
   primaryColor: _baseColorDark,
+  primaryColorLight: _shadowColorDarkBright,
+  primaryColorDark: _shadowColorDarkDark,
   accentColor: _accentColor,
   scaffoldBackgroundColor: _baseColorDark,
-  dialogBackgroundColor: _baseColorDark
+  dialogBackgroundColor: _baseColorDark,
 );
 
 
