@@ -86,13 +86,15 @@ class _WifiSetterState extends State<WifiSetter> {
       return;
     }
 
-    await targetDevice.connect();
+    if(targetDeviceState != BluetoothDeviceState.connected) {
+      await targetDevice.connect();
+    }
 
     discoverServices();
   }
 
   /// Disconnect from device
-  void disconnectFromDeivce() {
+  void disconnectFromDevice() {
     if (targetDevice == null) {
       return;
     }
