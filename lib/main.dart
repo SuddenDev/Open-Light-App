@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:dynamic_theme/dynamic_theme.dart';
+// import 'package:dynamic_theme/dynamic_theme.dart';
 //import 'package:flutter_blue/flutter_blue.dart';
 
 // import 'package:open_light_app/screens/wifi_setter.dart';
@@ -28,7 +28,7 @@ class OpenLightApp extends StatelessWidget {
             return BluetoothOffScreen(state: state);
           }),*/
       theme: lightTheme,
-      darkTheme: darkTheme
+      // darkTheme: darkTheme
     );
   }
 }

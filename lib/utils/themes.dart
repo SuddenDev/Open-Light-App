@@ -2,22 +2,37 @@
 
 import 'package:flutter/material.dart';
 
+final Color _baseColorLight = Colors.blueGrey[100];
+final Color _shadowColorLightBright = Colors.blueGrey[50];
+final Color _shadowColorLightDark = Colors.blueGrey[400];
+
+final Color _baseColorDark = Colors.blueGrey[800];
+final Color _shadowColorDarkBright = Colors.blueGrey[700];
+final Color _shadowColorDarkDark = Colors.blueGrey[900];
+
+final Color _accentColor = new Color(0xffFFBE61);
+
+
+/// Light Theme
 final ThemeData lightTheme = ThemeData(
-  primaryColor: Colors.blueGrey[100],
-  accentColor: new Color(0xffFFBE61),
-  scaffoldBackgroundColor: Colors.blueGrey[200],
+  primaryColor: _baseColorLight,
+  accentColor: _accentColor,
+  scaffoldBackgroundColor: _baseColorLight,
+  dialogBackgroundColor: _baseColorLight
 );
 
+/// Dark Theme
 final ThemeData darkTheme = ThemeData.dark().copyWith(
-  primaryColor: Colors.grey[850],
-  accentColor: new Color(0xffFFBE61),
-  scaffoldBackgroundColor: Colors.grey[900],
+  primaryColor: _baseColorDark,
+  accentColor: _accentColor,
+  scaffoldBackgroundColor: _baseColorDark,
+  dialogBackgroundColor: _baseColorDark
 );
 
 
-final _softUiShadowsDark = [
+final List<BoxShadow> softUiShadowsLight = [
     BoxShadow(
-      color: new Color(0x22000000),
+      color: _shadowColorLightDark,
       blurRadius: 12.0, // has the effect of softening the shadow
       spreadRadius: 1.0, // has the effect of extending the shadow
       offset: Offset(
@@ -26,7 +41,7 @@ final _softUiShadowsDark = [
           ),
     ),
     BoxShadow(
-      color: new Color(0x66ffffff),
+      color: _shadowColorLightBright,
       blurRadius: 12.0,
       spreadRadius: 1.0,
       offset: Offset(
@@ -36,9 +51,9 @@ final _softUiShadowsDark = [
     )
   ];
 
-  final _softUiShadowsLight = [
+  final List<BoxShadow> softUiShadowsDark = [
     BoxShadow(
-      color: new Color(0x22000000),
+      color:  _shadowColorDarkDark,
       blurRadius: 12.0, // has the effect of softening the shadow
       spreadRadius: 1.0, // has the effect of extending the shadow
       offset: Offset(
@@ -47,7 +62,7 @@ final _softUiShadowsDark = [
           ),
     ),
     BoxShadow(
-      color: new Color(0x66ffffff),
+      color: _shadowColorDarkBright,
       blurRadius: 12.0,
       spreadRadius: 1.0,
       offset: Offset(
